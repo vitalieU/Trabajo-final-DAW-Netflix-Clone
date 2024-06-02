@@ -2,7 +2,7 @@ import type { FC, ReactNode } from 'react';
 import { useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import FirstPage from '../assets/components/FirstPage';
+import FirstPage from '../components/FirstPage';
 import { useRecoilState } from 'recoil';
 import{userState} from '../atoms/Atom'
 

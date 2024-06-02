@@ -1,6 +1,6 @@
 import { useRecoilState } from 'recoil'
-import { Movie } from '../../../typing'
-import { modalState, movieState } from '../../atoms/Atom'
+import { Movie } from '../../typing'
+import { modalState, movieState } from '../atoms/Atom'
 
 interface Props {
   movie: Movie

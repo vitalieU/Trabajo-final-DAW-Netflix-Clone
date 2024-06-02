@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import { Movie } from '../../../typing'
+import { Movie } from '../../typing'
 import { FaPlay } from 'react-icons/fa'
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import { useRecoilState } from 'recoil'
-import { modalState, movieState } from '../../atoms/Atom'
+import { modalState, movieState } from '../atoms/Atom'
 
 interface Props {
   netflixOriginals: Movie[]

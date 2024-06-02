@@ -1,6 +1,6 @@
 import FormHeader from "./FormHeader";
 import { useRecoilState } from "recoil";
-import { userState } from "../../atoms/Atom";
+import { userState } from "../atoms/Atom";
 import restService from "../services/restService";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";

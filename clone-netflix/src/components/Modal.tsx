@@ -3,8 +3,8 @@ import MuiModal from "@mui/material/Modal";
 import { useEffect, useState } from "react";
 import ReactPlayer from "react-player/lazy";
 import { useRecoilState } from "recoil";
-import { modalState, movieState } from "../../atoms/Atom";
-import {  Genre } from "../../../typing";
+import { modalState, movieState } from "../atoms/Atom";
+import {  Genre } from "../../typing";
 import restService  from '../services/restService'
 
 function Modal() {

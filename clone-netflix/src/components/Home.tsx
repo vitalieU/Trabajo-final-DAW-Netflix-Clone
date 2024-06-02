@@ -1,10 +1,10 @@
 import { useRecoilValue } from 'recoil'
-import { modalState } from '../../atoms/Atom'
+import { modalState } from '../atoms/Atom'
 import Banner from './Banner'
 import Header from './Header'
 import Modal from './Modal'
 import Row from './Row'
-import { Movie } from '../../../typing'
+import { Movie } from '../../typing'
 import restService from '../services/restService'
 import { useEffect, useState } from 'react'
 

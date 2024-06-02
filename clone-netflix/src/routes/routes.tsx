@@ -1,9 +1,9 @@
 import { Navigate, type RouteObject } from "react-router-dom";
-import Home from '../assets/components/Home.tsx'
-import FirstPage from '../assets/components/FirstPage.tsx'
-import Pricing from '../assets/components/Pricing.tsx'
-import Regform from '../assets/components/Regform.tsx'
-import Paymentform from '../assets/components/Paymentform.tsx'
+import Home from '../components/Home.tsx'
+import FirstPage from '../components/FirstPage.tsx'
+import Pricing from '../components/Pricing.tsx'
+import Regform from '../components/Regform.tsx'
+import Paymentform from '../components/Paymentform.tsx'
 import AuthGuard from "./AuthGuard.tsx";
 
 
