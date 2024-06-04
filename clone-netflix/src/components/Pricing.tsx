@@ -1,19 +1,38 @@
 import FormHeader from "./FormHeader";
-import { useState, } from 'react'
+import { useEffect, useState} from 'react'
+import { userState } from "../atoms/Atom";
+import { useRecoilState } from "recoil";
+import { useNavigate } from "react-router-dom";
+import restService from '../services/restService'
 
 
 
 function Pricing() {
 
     const [plan, setPlan] = useState(0)
+    const [user] = useRecoilState(userState);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if(user?.email === ""){
+            navigate('/regform');
+        }
+    }, [user, navigate]);
 
     const handlePlan = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
         const target = e.target as HTMLImageElement;
         setPlan(target.dataset.value ? +target.dataset.value : 0);
 
     }
- 
 
+
+    async function handleClick() {
+        const response = await restService.requestSubscription(user!.email, plan.toString());
+        if(response){
+            window.open (response, "_self");
+        }
+        navigate('/spinner');
+    }
 
 return (
     <>
@@ -29,10 +48,10 @@ return (
         <h1 className="text-3xl font-bold p-2 text-center">Elige el plan ideal para ti</h1>
         </div>
 
-        <div className="flex flex-row justify-center">
-            <img src='/first-pricing.png'  className={`"w-1/4 m-2 rounded-3xl cursor-pointer ${plan === 1 ? 'border-8 border-slate-500' : ''}`}  data-value="1"onClick={handlePlan}/>
-            <img src='/second-pricing.png' className={`"w-1/4 m-2 rounded-3xl cursor-pointer ${plan === 2 ? 'border-8 border-slate-500' : ''}`} data-value="2" onClick={handlePlan}/>
-            <img src='/third-pricing.png' className= {`"w-1/4 m-2 rounded-3xl cursor-pointer ${plan === 3 ? 'border-8 border-slate-500' : ''}`} data-value="3"  onClick={handlePlan}/>
+        <div className="flex flex-row   w-80">
+            <img src='/first-pricing.png'  className={`" m-2 rounded-3xl cursor-pointer ${plan === 1 ? 'border-8 border-slate-500' : ''}`}  data-value="1"onClick={handlePlan}/>
+            <img src='/second-pricing.png' className={`" m-2 rounded-3xl cursor-pointer ${plan === 2 ? 'border-8 border-slate-500' : ''}`} data-value="2" onClick={handlePlan}/>
+            <img src='/third-pricing.png' className= {`" m-2 rounded-3xl cursor-pointer ${plan === 3 ? 'border-8 border-slate-500' : ''}`} data-value="3"  onClick={handlePlan}/>
         </div>
 
         <p className="p-2 text-md">Más información sobre el plan con anuncios. Si eliges un plan con anuncios, tendrás que facilitar tu fecha de nacimiento para la personalización de anuncios y otros fines coherentes con la Declaración de privacidad de Netflix.</p>
@@ -42,7 +61,7 @@ return (
         <br/>
         <br/>
         <div className="flex justify-center">
-          <button className="p-4 text-l font-semibold bg-red-600 hover:bg-red-700 text-white w-2/5">
+          <button className="p-4 text-l font-semibold bg-red-600 hover:bg-red-700 text-white w-2/5" onClick={handleClick}>
                 <span className="text-3xl">Siguiente</span>
           </button>
         </div>

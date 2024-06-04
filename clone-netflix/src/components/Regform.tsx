@@ -16,7 +16,7 @@ export default function Regform() {
   const location = useLocation();
   const Navigate = useNavigate();
   useEffect(() => {
-    user?.email && setUserEmail(user.email);
+    user?.email !== '' && setUserEmail(user!.email);
 
     if(location.pathname === "/regform"){
       setIsLogin(false);
@@ -27,6 +27,7 @@ export default function Regform() {
     const target = e.target as HTMLInputElement;
     if (target.name === "email") {
       setUserEmail(target.value);
+      setUser({...user, email: target.value});
     } else if (target.name === "password") {
       setUserPassword(target.value);
     }
@@ -62,7 +63,7 @@ export default function Regform() {
     const resp = restService.register(userEmail, userPassword);
     if (typeof resp === "object" && resp !== null) {
       setUser(await resp);
-      Navigate("/paymentform" );
+      Navigate("/pricing" );
     }
   }
 

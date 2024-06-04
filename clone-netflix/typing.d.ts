@@ -24,5 +24,5 @@ export interface Movie {
 
 export interface User {
     email: string
-    suscription?: boolean
+    suscribed?: boolean
 }

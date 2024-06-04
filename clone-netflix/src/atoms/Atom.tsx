@@ -14,5 +14,8 @@ export const movieState = atom<Movie  | null>({
 
 export const userState = atom<User|null>({
   key: 'userState',
-  default: null,
+  default: {
+    email: "",
+    suscribed: false,
+  },
 })

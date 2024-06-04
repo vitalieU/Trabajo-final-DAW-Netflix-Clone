@@ -1,9 +1,20 @@
-import { ChangeEvent, useState, MouseEvent } from "react";
-import {Navigate} from 'react-router-dom';
-
+import { ChangeEvent, useState, MouseEvent, useEffect } from "react";
+import {useNavigate} from 'react-router-dom';
+import { userState } from "../atoms/Atom";
+import { useRecoilState } from "recoil";
 function FirstPage() {
 
   const [email , setEmail] = useState("");
+  const [isLogin, setIsLogin] = useState(false);
+  const Navigate = useNavigate();
+  const [user ,setUser] = useRecoilState(userState);
+
+
+  useEffect(() => {
+    if(!user){
+      setIsLogin(false);
+    } 
+  }, [user]);
 
   const handleEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -14,7 +25,13 @@ function FirstPage() {
     if(email === ""){
       return;
     }
-    Navigate({to: "/login"});
+    setUser({...user, email:email});
+    if(isLogin){
+      Navigate("/login");
+    }
+    else{
+      Navigate("/regform");
+    }
   }
 
   return (

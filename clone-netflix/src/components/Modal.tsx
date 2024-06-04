@@ -18,7 +18,7 @@ function Modal() {
     if (!movie) return;
 
     async function fetchMovie() {
-      setTrailer('http://localhost:3003/api/stream?id=' + movie!.id);
+      setTrailer('http://localhost:3003/api/media/stream?id=' + movie!.id);
 
       const genreData = await restService.getGenre(movie!.genre_ids[0]);
       setGenre(genreData);

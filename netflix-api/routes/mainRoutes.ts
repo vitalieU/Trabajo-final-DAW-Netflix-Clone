@@ -2,6 +2,7 @@
 import type { Express, NextFunction } from 'express';
 import mediaRoutes from './mediaRoutes';
 import authRoutes from './authRoutes';
+import paymentRoutes from './paymentRoutes';
 import type{ Request, Response } from 'express';
 var jwt = require('jsonwebtoken');
 
@@ -17,8 +18,7 @@ var jwt = require('jsonwebtoken');
 async function checkJwt(req:Request , res: Response, next:NextFunction) {
     const token = req.cookies.token;
     if (!token) {
-        //redirect to root if no token
-        return res.status(401).redirect('/');
+        
     }
     try {
         const decoded = jwt.verify(token, Bun.env.JWT_SECRET);
@@ -31,9 +31,11 @@ async function checkJwt(req:Request , res: Response, next:NextFunction) {
 }
 export default (app: Express) => {
     //media routes config
-    app.use('/api', mediaRoutes);
+    app.use('/api/media', mediaRoutes);
     //auth routes config
-    app.use('/api', authRoutes);
+    app.use('/api/auth', authRoutes);
+    //payment routes config
+    app.use('/api/payment', paymentRoutes);
     //test endpoint
     app.get('/test', (req, res) => {
         res.send('api is running');

@@ -1,40 +1,36 @@
-import { Genre, Movie, User } from "../../../typing";
+import { Genre, Movie, User } from "../../typing";
 const endpoint = "http://localhost:3003";
 
-//rest service to make http calls
+
 
 export default {
   async getMovies(): Promise<Movie[]> {
-    const response = await fetch(endpoint+"/api/movies");
+    const response = await fetch(endpoint+"/api/media/movies");
     
     return response.json();
   },
   async getMoviesByGenre(genre: string): Promise<Movie[]> {
-    const response = await fetch(endpoint+`/api/movies?genre=${genre}`);
+    const response = await fetch(endpoint+`/api/media/movies?genre=${genre}`);
     return response.json();
   },
   getMoviesByPopularity(): Promise<Movie[]> {
-    const response = fetch(endpoint+`/api/movies?popularity=${true}`);
+    const response = fetch(endpoint+`/api/media/movies?popularity=${true}`);
     return response.then((res) => res.json());
   },
   getMoviesByRating(): Promise<Movie[]> {
-    const response = fetch(endpoint+`/api/movies?raiting=${true}`);
+    const response = fetch(endpoint+`/api/media/movies?raiting=${true}`);
     return response.then((res) => res.json());
   },
   async getMoviesByNetflix(): Promise<Movie[]> {
-    const response = await fetch(endpoint+`/api/movies?netflix=${true}`);
+    const response = await fetch(endpoint+`/api/media/movies?netflix=${true}`);
     return response.json();
   },
   async getGenre(genre: number): Promise<Genre[]> {
-    const response = await fetch(endpoint+`/api/genre?genre=${genre}`);
-    return response.json();
-  },
-  async streamVideo(id: number): Promise<Movie[]> {
-    const response = await fetch(endpoint+`/api/stream?id=${id}`);
+    const response = await fetch(endpoint+`/api/media/genre?genre=${genre}`);
     return response.json();
   },
   async login (email: string, password: string): Promise<User|null> {
-    const response = await fetch(endpoint+`/api/login`, {
+    const response = await fetch(endpoint+`/api/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -48,7 +44,7 @@ export default {
     }
   },
   async register (email: string, password: string): Promise<User|null> {
-    const response = await fetch(endpoint+`/api/register`, {
+    const response = await fetch(endpoint+`/api/auth/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -60,6 +56,20 @@ export default {
     }else{
       return null;
     }
+  },
+  async requestSubscription(email: string, item: string): Promise<string> {
+    const response = await fetch(endpoint+`/api/payment/create-subscription`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({email, item})
+    });
+    return response.json();
+  },
+  async checkSubscription(email: string): Promise<{suscribed:boolean, user?:User}> {
+    const response = await fetch(endpoint+`/api/payment/check-suscription?email=${email}`);
+    return response.json();
   }
   
 };

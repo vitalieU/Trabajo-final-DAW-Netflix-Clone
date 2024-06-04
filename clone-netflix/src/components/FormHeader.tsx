@@ -1,8 +1,8 @@
-import {Navigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 
 
 export default function FormHeader() {
-
+  const Navigate = useNavigate();
 
 
   return (
@@ -14,7 +14,7 @@ export default function FormHeader() {
         focusable="false"
         className=" cursor-pointer object-contain p-2 h-14"
         fill="red"
-        onClick={() => Navigate({ to: "/home" })}
+        onClick={() => Navigate( "/home" )}
       >
         <g id="netflix-logo">
           <path
