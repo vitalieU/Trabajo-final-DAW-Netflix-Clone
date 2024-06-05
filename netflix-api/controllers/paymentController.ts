@@ -32,15 +32,15 @@ export default {
   successTtransaction: async (req: Request, res: Response) => {
     const client = await pool.connect();
     const session = await stripe.checkout.sessions.retrieve(req.query.session_id as string);
-    const query = `INSERT INTO subscriptions (email, stripe_id,  stripe_status, user_id) VALUES ($1, $2, $3, $4)`;
-    const  query2 = `SELECT * FROM users WHERE email = $1`;
+    const query = `INSERT INTO subscriptions (email, stripe_id, stripe_status, user_id, amount, transaction_date) VALUES ($1, $2, $3, $4, $5, $6)`;
+    const query2 = `SELECT * FROM users WHERE email = $1`;
     const query3 = `UPDATE users SET suscribed = true WHERE email = $1`;
 
     try {
       await client.query("BEGIN");
-      const resp1 =await client.query(query2, [req.query.email]);
-      await client.query(query, [req.query.email, session.id, session.payment_status, resp1.rows[0].id]);
-      await client.query(query3, [req.query.email]);  
+      const resp1 = await client.query(query2, [req.query.email]);
+      await client.query(query, [req.query.email, session.id, session.payment_status, resp1.rows[0].id, session.amount_total, session.created]);
+      await client.query(query3, [req.query.email]);
       await client.query("COMMIT");
       res.status(200).json({ message: "success" });
 
@@ -53,13 +53,13 @@ export default {
   canceledTRansaction: async (req: Request, res: Response) => {
     const client = await pool.connect();
     const session = await stripe.checkout.sessions.retrieve(req.query.session_id as string);
-    const query = `INSERT INTO subscriptions (email, stripe_id,  stripe_status, user_id) VALUES ($1, $2, $3, $4)`;
+    const query = `INSERT INTO subscriptions (email, stripe_id,  stripe_status, user_id,amount, transaction_date) VALUES ($1, $2, $3, $4, $5, $6)`;
     const  query2 = `SELECT * FROM users WHERE email = $1`;
     try {
       
       await client.query("BEGIN");
       const resp1 =await client.query(query2, [req.query.email]);
-      await client.query(query, [req.query.email, session.id, session.payment_status, resp1.rows[0].id]);
+      await client.query(query, [req.query.email, session.id, session.payment_status, resp1.rows[0].id, session.amount_total, session.created]);
       await client.query("COMMIT");
       res.status(200).json({ message: "canceled" });
     } catch (error) {

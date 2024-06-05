@@ -170,9 +170,9 @@ function FirstPage() {
       <p className="p-5 text-white font-bold text-5xl ">
           Preguntas frecuentes
         </p>
-      <div className=" flex  flex-col justify-around  ">
+      <div className=" flex  flex-col justify-around   ">
         
-        <div className="m-2 space-y-2  w-3/4 ">
+        <div className="m-2 space-y-2  w-3/4 self-center">
           <div
             className="group flex flex-col gap-2 rounded-lg bg-[#303030] p-5 text-white "
             tabIndex={1}
@@ -192,7 +192,7 @@ function FirstPage() {
           </div>
         </div>
 
-        <div className="m-2 space-y-2  w-3/4 bg-black">
+        <div className="m-2 space-y-2  w-3/4 bg-black self-center">
           <div
             className="group flex flex-col gap-2 rounded-lg bg-[#303030] p-5 text-white "
             tabIndex={1}
@@ -209,7 +209,7 @@ function FirstPage() {
             </div>
           </div>
         </div>
-        <div className="m-2 space-y-2  w-3/4 ">
+        <div className="m-2 space-y-2  w-3/4  self-center">
           <div
             className="group flex flex-col gap-2 rounded-lg bg-[#303030] p-5 text-white "
             tabIndex={1}
@@ -227,7 +227,7 @@ function FirstPage() {
             </div>
           </div>
         </div>
-        <div className="m-2 space-y-2  w-3/4 ">
+        <div className="m-2 space-y-2  w-3/4 self-center">
           <div
             className="group flex flex-col gap-2 rounded-lg bg-[#303030] p-5 text-white "
             tabIndex={1}
@@ -244,7 +244,7 @@ function FirstPage() {
             </div>
           </div>
         </div>
-        <div className="m-2 space-y-2  w-3/4 ">
+        <div className="m-2 space-y-2  w-3/4 self-center">
           <div
             className="group flex flex-col gap-2 rounded-lg bg-[#303030] p-5 text-white "
             tabIndex={1}
@@ -261,7 +261,7 @@ function FirstPage() {
             </div>
           </div>
         </div>
-        <div className="m-2 space-y-2  w-3/4 ">
+        <div className="m-2 space-y-2  w-3/4 self-center">
           <div
             className="group flex flex-col gap-2 rounded-lg bg-[#303030] p-5 text-white "
             tabIndex={1}

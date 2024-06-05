@@ -5,6 +5,7 @@ import pool from './db-config/db';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import cookie from 'cookie-parser';
+import statsController from './controllers/statsController';
 
 const app = express();
 
@@ -24,4 +25,8 @@ app.listen(3003, () => {
 pool.connect()
     .then(() => console.log('connected to the db'))
     .catch((err) => console.error('error connecting to the db', err));
+
+// Start the WebSocket server
+
+statsController;
     
