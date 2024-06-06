@@ -1,0 +1,46 @@
+version: "3"
+services:
+  postgres:
+    image: "postgres:16"
+    environment:
+      - POSTGRES_PASSWORD=postgres_password
+  nginx:
+    depends_on:
+      - api
+      - client
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - "3050:80"
+  api:
+    build:
+      dockerfile: Dockerfile.dev
+      context: "./netflix-api"
+    volumes:
+      - /app/node_modules
+      - ./server:/app
+    environment:
+      - DB_USER=postgres
+      - DB_PASSWORD=suslenimoldova
+      -  DB_HOST=localhost
+      -  DB_PORT=5432
+      -  DB_DATABASE=netflix
+      -  JWT_SECRET='esto es muy secreto, en serio, creanme, confiad en mi, es 100% seguro'
+      -  STRIPE_SECRET_KEY=sk_test_51O5alyKk2TlgcK2ACQKvwv5Pq0Zeb9TO9lIMJXc8JfAMHgrObAkjI0qdquNP8Zu1nlr53QJX6P0rb698PkyOYj0L00oTUjEcj3
+      -  ENDPOINT=http://localhost:3003
+      -  STRIPE_PRICE_ID_1=price_1PNM4SKk2TlgcK2ADbGG0EzA
+      -  STRIPE_PRICE_ID_2=price_1PNM52Kk2TlgcK2AhsQoIojW
+      -  STRIPE_PRICE_ID_3=price_1PNM6sKk2TlgcK2AJlDF4Iz7
+  client:
+    stdin_open: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./clone-netflix
+    volumes:
+      - /app/node_modules
+      - ./client:/app
+

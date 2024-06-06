@@ -6,11 +6,17 @@ import Modal from './Modal'
 import Row from './Row'
 import { Movie } from '../../typing'
 import restService from '../services/restService'
+import { useNavigate } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react'
 
 
 function Home() {
   const showModal = useRecoilValue(modalState);
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const type = searchParams.get('type') || 'all';
+
   const [netflixOriginals, setNetflixOriginals] = useState<Movie[]>([]);
   const [trendingNow, setTrendingNow] = useState<Movie[]>([]);
   const [topRated, setTopRated] = useState<Movie[]>([]);
@@ -21,19 +27,33 @@ function Home() {
   const [documentaries, setDocumentaries] = useState<Movie[]>([]);
 
   useEffect(() => {
+    async function checkIfSuscribed(){
+
+      const resp = await restService.checkUser();
+      console.log(resp);
+      if(resp!.suscribed===false){
+        navigate('/payment');
+      }
+      else if(resp===null){
+        navigate('/');
+      }
+    }
     async function fetchMovies() {
-      setNetflixOriginals(await restService.getMovies());
-      setTrendingNow(await restService.getMoviesByPopularity());
-      setTopRated(await restService.getMoviesByRating());
-      setActionMovies(await restService.getMoviesByGenre('Action'));
-      setComedyMovies(await restService.getMoviesByGenre('Comedy'));
-      setHorrorMovies(await restService.getMoviesByGenre('Horror'));
-      setRomanceMovies(await restService.getMoviesByGenre('Romance'));
-      setDocumentaries(await restService.getMoviesByGenre('Documentary'));
+      setNetflixOriginals(await restService.getMovies(type!));
+      setTrendingNow(await restService.getMoviesByPopularity(type!));
+      setTopRated(await restService.getMoviesByRating(type!));
+      setActionMovies(await restService.getMoviesByGenre('Action',type!));
+      setComedyMovies(await restService.getMoviesByGenre('Comedy',type!));
+      setHorrorMovies(await restService.getMoviesByGenre('Horror',type!));
+      setRomanceMovies(await restService.getMoviesByGenre('Romance',type!));
+      setDocumentaries(await restService.getMoviesByGenre('Documentary',type!));
     }
 
+
+
     fetchMovies().catch((error) => console.error(error));
-  }, []);
+    checkIfSuscribed().catch((error) => console.error(error));
+  }, [type]);
 
 
   return (
@@ -47,13 +67,18 @@ function Home() {
       <main className="relative pl-4 pb-24 lg:space-y-24 lg:pl-16">
         <Banner netflixOriginals={netflixOriginals} />
         <section className="md:space-y-24">
-          <Row title="Trending Now" movies={trendingNow} />
-          <Row title="Top Rated" movies={topRated} />
-          <Row title="Action Thrillers" movies={actionMovies} />
-          <Row title="Comedies" movies={comedyMovies} />
-          <Row title="Scary Movies" movies={horrorMovies} />
-          <Row title="Romance Movies" movies={romanceMovies} />
-          <Row title="Documentaries" movies={documentaries} />
+          <Row title="Populares" movies={trendingNow} />
+          <Row title="Más valorados" movies={topRated} />
+          {/*don'have tv shows for this genres so I remove this rows*/
+          type !== 'tv' && (
+          <>
+            <Row title="Acción" movies={actionMovies} />
+            <Row title="Terror " movies={horrorMovies} />
+            <Row title="Romance" movies={romanceMovies} />
+          </>
+          )}
+          <Row title="Comedias" movies={comedyMovies} />
+          <Row title="Documentales" movies={documentaries} />
         </section>
       </main>
       {showModal && <Modal />}

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { BellIcon, MagnifyingGlassIcon } from '@heroicons/react/24/solid'
+import {Link} from 'react-router-dom'
 
 
 function Header() {
@@ -29,11 +30,10 @@ function Header() {
           height={100} />
   
           <ul className="hidden space-x-4 md:flex">
-            <li className="headerLink">Home</li>
-            <li className="headerLink">TV Shows</li>
-            <li className="headerLink">Movies</li>
-            <li className="headerLink">New & Popular</li>
-            <li className="headerLink">My List</li>
+            <li className="headerLink"><Link to='/hom?type=all'>Home</Link></li>
+            <li className="headerLink"><Link to='/home?type=tv'>Series</Link></li>
+            <li className="headerLink"><Link to='/home?type=movie'>Peliculas</Link></li>
+            <li className="headerLink">Mis listas</li>
           </ul>
         </div>
   

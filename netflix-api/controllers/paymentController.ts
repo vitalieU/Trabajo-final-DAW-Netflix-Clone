@@ -18,11 +18,11 @@ export default {
           quantity: 1,
         },
       ],
-      success_url: `${Bun.env.ENDPOINT}/api/success?session_id={CHECKOUT_SESSION_ID}&email=${email}`,
-      cancel_url: `${Bun.env.ENDPOINT}/api/cancel?session_id={CHECKOUT_SESSION_ID}&email=${email}`,
+      success_url: `${Bun.env.ENDPOINT}/api/payment/success?session_id={CHECKOUT_SESSION_ID}&email=${email}`,
+      cancel_url: `${Bun.env.ENDPOINT}/api/payment/cancel?session_id={CHECKOUT_SESSION_ID}&email=${email}`,
     });
     if(session){
-      res.status(200).json({ id: session.id });
+      res.status(200).json( session.url );
     }
     else{
       res.status(500).json({message:"error"});
@@ -39,7 +39,7 @@ export default {
     try {
       await client.query("BEGIN");
       const resp1 = await client.query(query2, [req.query.email]);
-      await client.query(query, [req.query.email, session.id, session.payment_status, resp1.rows[0].id, session.amount_total, session.created]);
+      await client.query(query, [req.query.email, session.id, session.payment_status, resp1.rows[0].id, session.amount_total,  new Date()]);
       await client.query(query3, [req.query.email]);
       await client.query("COMMIT");
       res.status(200).json({ message: "success" });
@@ -59,11 +59,12 @@ export default {
       
       await client.query("BEGIN");
       const resp1 =await client.query(query2, [req.query.email]);
-      await client.query(query, [req.query.email, session.id, session.payment_status, resp1.rows[0].id, session.amount_total, session.created]);
+      await client.query(query, [req.query.email, session.id, session.payment_status, resp1.rows[0].id, session.amount_total, new Date()]);
       await client.query("COMMIT");
       res.status(200).json({ message: "canceled" });
     } catch (error) {
       await client.query("ROLLBACK");
+      res.status(500).json({ message: "error" });
     }
     finally{
       client.release();
@@ -80,10 +81,10 @@ export default {
         user = await pool.query(userQuery, [req.query.email]);
         const token = jwt.sign({ id: user.rows[0].id, email:user.rows[0].email, suscribed:true }, Bun.env.JWT_SECRET!, { expiresIn: '24h' });
          delete user.rows[0].password;
-        res.status(200).json({user, suscribed:true});
+        res.status(200).json({email: user.rows[0].email, suscribed:true});
       }
       else{
-        res.status(200).json({suscribed:false});
+        res.status(404).json({suscribed:false});
       }
     } catch (error) {
       res.status(500).json({message:"error"});

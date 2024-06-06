@@ -51,7 +51,7 @@ function Banner({ netflixOriginals }: Props) {
             setShowModal(true)
           }}
         >
-          More Info <InformationCircleIcon className="h-5 w-5 md:h-8 md:w-8" />
+          Mas info <InformationCircleIcon className="h-5 w-5 md:h-8 md:w-8" />
         </button>
       </div>
     </div>

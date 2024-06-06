@@ -1,28 +1,29 @@
 import { Genre, Movie, User } from "../../typing";
+
 const endpoint = "http://localhost:3003";
 
 
 
 export default {
-  async getMovies(): Promise<Movie[]> {
-    const response = await fetch(endpoint+"/api/media/movies");
+  async getMovies(media_type:string): Promise<Movie[]> {
+    const response = await fetch(endpoint+"/api/media/movies?media_type="+media_type);
     
     return response.json();
   },
-  async getMoviesByGenre(genre: string): Promise<Movie[]> {
-    const response = await fetch(endpoint+`/api/media/movies?genre=${genre}`);
+  async getMoviesByGenre(genre: string, media_type:string): Promise<Movie[]> {
+    const response = await fetch(endpoint+`/api/media/movies?genre=${genre}&media_type=${media_type}`);
     return response.json();
   },
-  getMoviesByPopularity(): Promise<Movie[]> {
-    const response = fetch(endpoint+`/api/media/movies?popularity=${true}`);
+  getMoviesByPopularity( media_type:string): Promise<Movie[]> {
+    const response = fetch(endpoint+`/api/media/movies?popularity=${true}&media_type=${media_type}`);
     return response.then((res) => res.json());
   },
-  getMoviesByRating(): Promise<Movie[]> {
-    const response = fetch(endpoint+`/api/media/movies?raiting=${true}`);
+  getMoviesByRating(media_type:string): Promise<Movie[]> {
+    const response = fetch(endpoint+`/api/media/movies?raiting=${true}&media_type=${media_type}`);
     return response.then((res) => res.json());
   },
-  async getMoviesByNetflix(): Promise<Movie[]> {
-    const response = await fetch(endpoint+`/api/media/movies?netflix=${true}`);
+  async getMoviesByNetflix(media_type:string): Promise<Movie[]> {
+    const response = await fetch(endpoint+`/api/media/movies?netflix=${true}&media_type=${media_type}`);
     return response.json();
   },
   async getGenre(genre: number): Promise<Genre[]> {
@@ -32,8 +33,9 @@ export default {
   async login (email: string, password: string): Promise<User|null> {
     const response = await fetch(endpoint+`/api/auth/login`, {
       method: 'POST',
+      credentials: 'include',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({email, password})
     });
@@ -46,11 +48,26 @@ export default {
   async register (email: string, password: string): Promise<User|null> {
     const response = await fetch(endpoint+`/api/auth/register`, {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({email:email, pass:password})
     });
+    if(response.ok){
+      return response.json();
+    }else{
+      return null;
+    }
+  },
+  async checkUser(): Promise<User|null> {
+    const response = await fetch(endpoint+`/api/auth/check-user`,{
+      method: 'GET',
+      credentials: 'include', 
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
     if(response.ok){
       return response.json();
     }else{
@@ -68,7 +85,7 @@ export default {
     return response.json();
   },
   async checkSubscription(email: string): Promise<{suscribed:boolean, user?:User}> {
-    const response = await fetch(endpoint+`/api/payment/check-suscription?email=${email}`);
+    const response = await fetch(endpoint+`/api/payment/check-subscription?email=${email}`);
     return response.json();
   }
   

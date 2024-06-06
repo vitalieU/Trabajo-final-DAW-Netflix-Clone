@@ -62,7 +62,7 @@ export default function Regform() {
   async function Registration(){
     const resp = restService.register(userEmail, userPassword);
     if (typeof resp === "object" && resp !== null) {
-      setUser(await resp);
+    
       Navigate("/pricing" );
     }
   }
@@ -83,7 +83,7 @@ export default function Regform() {
       <div className="mx-auto w-1/4 flex flex-col justify-center">
         <div className="p-4">
           {!isLogin && <span className="text-sm p-2">Paso 1 de 3</span>} 
-          <h1 className="text-3xl font-bold p-2">
+          <h1 className="text-3xl font-bold p-2 text-center">
  
             {isLogin ? "Inicia sesión" : "Regístrate" }
           </h1>

@@ -11,15 +11,16 @@ export default function Spinner() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        setTimeout(async () => {
+        const intervalId = setInterval(async () => {
             const resp = await restService.checkSubscription(user!.email);
             if(resp.suscribed){
                 setUser(resp.user!);
                 navigate('/home');
             }
-        }
-        , 3000);
-    }, []);
+        }, 3000);
+    
+        return () => clearInterval(intervalId);
+    }, [user, navigate, setUser]);
 
   return (
     <div className="container">

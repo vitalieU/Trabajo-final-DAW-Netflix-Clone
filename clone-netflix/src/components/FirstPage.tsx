@@ -1,5 +1,5 @@
 import { ChangeEvent, useState, MouseEvent, useEffect } from "react";
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, Link} from 'react-router-dom';
 import { userState } from "../atoms/Atom";
 import { useRecoilState } from "recoil";
 function FirstPage() {
@@ -19,7 +19,7 @@ function FirstPage() {
   const handleEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   }
- 
+
   function handleClick(event: MouseEvent<HTMLButtonElement>): void {
     event.preventDefault();
     if(email === ""){
@@ -58,8 +58,8 @@ function FirstPage() {
             </g>
           </svg>
         </div>
-        <button className="absolute bg-red-600 hover:bg-red-700 text-white p-3 top-0 right-0 mt-3 mr-5">
-          Inicia sesión
+        <button className="absolute bg-red-600 hover:bg-red-700 text-white p-3 top-0 right-0 mt-3 mr-5" >
+          <Link to="/login">Incio sesion </Link>
         </button>
         <div className="space-y-5">
           <p className="text-white font-bold text-5xl flex flex-col items-center">
@@ -72,16 +72,16 @@ function FirstPage() {
             ¿Quieres ver algo ya? Escribe tu dirección de correo para crear una
             suscripción a Netflix o reactivarla.
           </p>
-          <div className="flex flex-row items-center justify-center">
+          <div className="flex flex-row items-center justify-center ">
             <input
-              type="text"
+              type="email"
               name="email"
               value={email}
               onChange={handleEmail}
               placeholder="Email address"
-              className="p-4 focus:outline-none focus:ring-1 focus:ring-blue-300 w-3/4"
+              className="p-4 focus:outline-none focus:ring-1 focus:ring-blue-300 w-3/4 text-black"
             />
-            <button className="p-4 text-l font-semibold bg-red-600 hover:bg-red-700 text-white" onClick={handleClick}>
+            <button className="p-4 text-l font-semibold bg-red-600 hover:bg-red-700 text-black" onClick={handleClick}>
               Empezar{" "}
             </button>
           </div>

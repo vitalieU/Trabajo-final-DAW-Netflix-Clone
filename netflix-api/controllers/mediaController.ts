@@ -3,7 +3,7 @@ import pool from '../db-config/db';
 import fs from 'fs';
 export default {
     getMovies: async (req: Request, res: Response) => {
-        const {genre, popularity, rating, netflix} = req.query;
+        const {genre, popularity, rating, netflix, media_type} = req.query;
         try {
             let where_clause = '';
             let order_clause = '';
@@ -20,6 +20,14 @@ export default {
            
             if(netflix){
                 where_clause +=  ' ';
+            }
+            if (media_type && media_type !== 'all') {
+                if (where_clause) {
+                    where_clause += ' AND ';
+                } else {
+                    where_clause += ' WHERE ';
+                }
+                where_clause += `media_type = '${media_type}'`;
             }
     
             let query = `SELECT * FROM movies ${where_clause} ${order_clause} LIMIT 10`;

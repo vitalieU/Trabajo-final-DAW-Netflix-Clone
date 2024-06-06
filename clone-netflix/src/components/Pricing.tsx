@@ -29,7 +29,7 @@ function Pricing() {
     async function handleClick() {
         const response = await restService.requestSubscription(user!.email, plan.toString());
         if(response){
-            window.open (response, "_self");
+            window.open (response, "popup", "width=600,height=600");
         }
         navigate('/spinner');
     }
@@ -48,7 +48,7 @@ return (
         <h1 className="text-3xl font-bold p-2 text-center">Elige el plan ideal para ti</h1>
         </div>
 
-        <div className="flex flex-row   w-80">
+        <div className="flex flex-row   w-80 align-middle">
             <img src='/first-pricing.png'  className={`" m-2 rounded-3xl cursor-pointer ${plan === 1 ? 'border-8 border-slate-500' : ''}`}  data-value="1"onClick={handlePlan}/>
             <img src='/second-pricing.png' className={`" m-2 rounded-3xl cursor-pointer ${plan === 2 ? 'border-8 border-slate-500' : ''}`} data-value="2" onClick={handlePlan}/>
             <img src='/third-pricing.png' className= {`" m-2 rounded-3xl cursor-pointer ${plan === 3 ? 'border-8 border-slate-500' : ''}`} data-value="3"  onClick={handlePlan}/>

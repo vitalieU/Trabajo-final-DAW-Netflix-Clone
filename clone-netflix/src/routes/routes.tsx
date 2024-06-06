@@ -3,7 +3,6 @@ import Home from '../components/Home.tsx'
 import FirstPage from '../components/FirstPage.tsx'
 import Pricing from '../components/Pricing.tsx'
 import Regform from '../components/Regform.tsx'
-import Paymentform from '../components/Paymentform.tsx'
 import AuthGuard from "./AuthGuard.tsx";
 import Spinner from "../components/Spinner.tsx";
 import Dashboard from "../components/Dashboard.tsx";
@@ -38,10 +37,6 @@ const routes: RouteObject[] = [
   {
     path:'login',
     element:<Regform/>,
-  },
-  {
-    path: '/paymentform',
-    element: <Paymentform />,
   },
   {
     path: '/*',
