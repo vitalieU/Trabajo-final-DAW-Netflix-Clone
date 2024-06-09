@@ -82,5 +82,29 @@ export default {
         } catch (error:any) {
             res.status(400).json({ message: error.message });
         }
+    },
+    searchQuery: async (req: Request, res: Response) => {
+        const { query } = req.query;
+        try {
+            const response = await pool.query(`SELECT *
+                                                FROM public.movies
+                                                WHERE title ILIKE '%${query}%' 
+                                                LIMIT 10;
+                                                `);
+            res.status(200).json(response.rows);
+        } catch (error:any) {
+            res.status(400).json({ message: error.message });
+        }
+    },
+    getWatchlist: async (req: Request, res: Response) => {
+        const query = `SELECT movies.ID FROM movies
+                      JOIN watchlis w ON w.movie_id = movies.id
+                      WHERE w.user_id = $1;`
+        try {
+            const response = await pool.query(query,[req.body.user.id]);
+           res.status(200).json(response.rows);
+        } catch (error: any) {
+            res.status(400).json({ message: error.message });
+        }              
     }
 }

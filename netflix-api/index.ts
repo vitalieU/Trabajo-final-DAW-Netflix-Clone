@@ -9,7 +9,7 @@ import statsController from './controllers/statsController';
 
 const app = express();
 app.use((req, res, next) => {
-  const allowedOrigins = ['http://172.26.7.149:5175'];
+  const allowedOrigins = ['http://172.26.7.149:5173', 'http://172.26.7.149:4173'];
   const origin = req.headers.origin ?? '';
 
   if (allowedOrigins.includes(origin)) {
@@ -20,7 +20,7 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
 
   // Allow the OPTIONS method (preflight request) to check for CORS permissions
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT,OPTIONS, DELETE, PATCH');
 
   // Indicate that the response can include credentials (e.g., cookies)
   res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -28,6 +28,7 @@ app.use((req, res, next) => {
   // Move to the next middleware
   next();
 });
+ //app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());

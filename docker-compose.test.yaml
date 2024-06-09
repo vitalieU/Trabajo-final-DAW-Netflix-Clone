@@ -7,20 +7,27 @@ services:
     volumes:
       - ./data:/var/lib/postgresql/data
 
+  nginx:
+    depends_on:
+      - api
+      - client
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - "3050:80"
+ 
   api:
     build:
       dockerfile: Dockerfile
       context: "./netflix-api"
-    volumes:
-      - ./netflix-api/src:/app/src
-
     environment:
       - DB_USER=postgres
       - DB_PASSWORD=postgres_password
       - DB_HOST=postgres
       - DB_PORT=5432
       - DB_DATABASE=netflix
-      - ENDPOINT=http://localhost:3003
       - JWT_SECRET='esto es muy secreto, en serio, creanme, confiad en mi, es 100% seguro'
       - STRIPE_SECRET_KEY=sk_test_51O5alyKk2TlgcK2ACQKvwv5Pq0Zeb9TO9lIMJXc8JfAMHgrObAkjI0qdquNP8Zu1nlr53QJX6P0rb698PkyOYj0L00oTUjEcj3
       - STRIPE_PRICE_ID_1=price_1PNM4SKk2TlgcK2ADbGG0EzA
@@ -30,10 +37,8 @@ services:
     build:
       dockerfile: Dockerfile
       context: "./clone-netflix"
-    volumes:
-    - ./clone-netflix/src:/app/src
-
-    ports:
-      - "3000:3000"  
-
+    environment:
+      - PRODUCTION=false
+      - DEVELOPMENT_URL=http://localhost:3003/
+      - WEB_SOCKET_PROD_URL=ws://localhost/websocket
 

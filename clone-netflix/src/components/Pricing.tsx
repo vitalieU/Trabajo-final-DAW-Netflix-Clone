@@ -48,10 +48,16 @@ return (
         <h1 className="text-3xl font-bold p-2 text-center">Elige el plan ideal para ti</h1>
         </div>
 
-        <div className="flex flex-row   w-80 align-middle">
-            <img src='/first-pricing.png'  className={`" m-2 rounded-3xl cursor-pointer ${plan === 1 ? 'border-8 border-slate-500' : ''}`}  data-value="1"onClick={handlePlan}/>
-            <img src='/second-pricing.png' className={`" m-2 rounded-3xl cursor-pointer ${plan === 2 ? 'border-8 border-slate-500' : ''}`} data-value="2" onClick={handlePlan}/>
-            <img src='/third-pricing.png' className= {`" m-2 rounded-3xl cursor-pointer ${plan === 3 ? 'border-8 border-slate-500' : ''}`} data-value="3"  onClick={handlePlan}/>
+        <div className="flex flex-row justify-center ">
+            <div>
+                 <img src='/first-pricing.png'  className={`" m-2 rounded-3xl cursor-pointer ${plan === 1 ? 'border-8 border-slate-500' : ''}`}  data-value="1"onClick={handlePlan}/>
+            </div>
+            <div>
+                <img src='/second-pricing.png' className={`" m-2 rounded-3xl cursor-pointer ${plan === 2 ? 'border-8 border-slate-500' : ''}`} data-value="2" onClick={handlePlan}/>
+            </div>
+            <div>
+                <img src='/third-pricing.png' className= {`" m-2 rounded-3xl cursor-pointer ${plan === 3 ? 'border-8 border-slate-500' : ''}`} data-value="3"  onClick={handlePlan}/>
+            </div>
         </div>
 
         <p className="p-2 text-md">Más información sobre el plan con anuncios. Si eliges un plan con anuncios, tendrás que facilitar tu fecha de nacimiento para la personalización de anuncios y otros fines coherentes con la Declaración de privacidad de Netflix.</p>

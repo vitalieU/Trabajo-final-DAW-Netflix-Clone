@@ -1,6 +1,7 @@
 import pool from "../db-config/db";
-
+import type { Request, Response } from "express";
 import WebSocket from "ws";
+import type { User } from "../model/typing";
 
 const wss = new WebSocket.Server({ port: 8080 });
 
@@ -91,4 +92,59 @@ async function getEarnings(){
   }
 }
 
-export default {};
+export default {
+  getAllUsers: async (req: Request, res: Response) => {
+    const query = `SELECT id, email, created_at, suscribed  FROM users`;
+    try {
+      const response = await pool.query(query);
+      res.status(200).json(response.rows);
+    }
+    catch (error: any) {
+      res.status(400).json({ message: error.message });
+    }
+  },
+  getAllTvShows: async (req: Request, res: Response) => {
+    const query = `SELECT 
+                        m.id ,
+                        m.title,
+                        m.release_date,
+                        json_agg(json_build_object( 'name', g.name)) AS genres
+                    FROM 
+                        movies m
+                    JOIN 
+                        LATERAL jsonb_array_elements_text(m.genre_ids::jsonb) AS genre_id_text ON TRUE
+                    JOIN 
+                        genres g ON g.id = genre_id_text::int
+                    Where 
+                        m.media_type = 'tv'
+                    GROUP BY m.id, m.title, m.release_date`;
+    try {
+      const response = await pool.query(query);
+      res.status(200).json(response.rows);
+    } catch (error: any) {
+      res.status(400).json({ message: error.message });
+    }
+  },
+  getAllMovies: async (req: Request, res: Response) => { 
+    const query = `SELECT 
+                        m.id ,
+                        m.title,
+                        m.release_date,
+                        json_agg(json_build_object( 'name', g.name)) AS genres
+                    FROM 
+                        movies m
+                    JOIN 
+                        LATERAL jsonb_array_elements_text(m.genre_ids::jsonb) AS genre_id_text ON TRUE
+                    JOIN 
+                        genres g ON g.id = genre_id_text::int
+                    Where 
+                        m.media_type = 'movie'
+                    GROUP BY m.id, m.title, m.release_date`;
+    try {
+      const response = await pool.query(query);
+      res.status(200).json(response.rows);
+    } catch (error: any) {
+      res.status(400).json({ message: error.message });
+    }
+  } 
+};

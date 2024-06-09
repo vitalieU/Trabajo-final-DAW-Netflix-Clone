@@ -6,6 +6,8 @@ import Regform from '../components/Regform.tsx'
 import AuthGuard from "./AuthGuard.tsx";
 import Spinner from "../components/Spinner.tsx";
 import Dashboard from "../components/Dashboard.tsx";
+import UsersTable from "../components/UsersTable.tsx";
+import MoviesTable from "../components/MoviesTable.tsx";
 
 
 const routes: RouteObject[] = [
@@ -49,7 +51,16 @@ const routes: RouteObject[] = [
   {
     path:'/admin',
     element: <Dashboard />,
+  },
+  {
+    path:'/admin/users',
+    element: <UsersTable />,
+  },
+  {
+    path:'/admin/movies',
+    element: <MoviesTable />,
   }
+
 ];
 
 export default routes;

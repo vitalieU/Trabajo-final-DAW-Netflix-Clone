@@ -1,4 +1,4 @@
-import {XMarkIcon,} from "@heroicons/react/24/outline";
+import {XMarkIcon, BookmarkIcon} from "@heroicons/react/24/outline";
 import MuiModal from "@mui/material/Modal";
 import { useEffect, useState } from "react";
 import ReactPlayer from "react-player/lazy";
@@ -18,20 +18,22 @@ function Modal() {
     if (!movie) return;
 
     async function fetchMovie() {
-      setTrailer('http://localhost:3003/api/media/stream?id=' + movie!.id);
+      setTrailer('/api/media/stream?id=' + movie!.id);
 
       const genreData = await restService.getGenre(movie!.genre_ids[0]);
       setGenre(genreData);
 
       
     }
-
     fetchMovie();
-  }, [movie]);
+    
+    
+  }, [movie, ]);
 
   const handleClose = () => {
     setShowModal(false);
   };
+
 
 
   return (
@@ -62,6 +64,7 @@ function Modal() {
 
         <div className="flex space-x-16 rounded-b-md bg-[#181818] px-10 py-8">
           <div className="space-y-6 text-lg">
+            <div className="flex justify-between">
             <div className="flex items-center space-x-2 text-sm">
               <p className="font-semibold text-green-400">
                 {movie!.vote_average * 10}% Match
@@ -73,10 +76,18 @@ function Modal() {
                 HD
               </div>
             </div>
+            
+              <button className="w-10 " ><BookmarkIcon/></button> 
 
+            </div>
+
+            <div>
+               <h1 className="text-3xl">{movie?.title || movie?.name}</h1>
+            </div>
             <div className="flex flex-col gap-x-10 gap-y-4 font-light md:flex-row">
+              
               <p className="w-5/6">{movie?.overview}</p>
-              <div className="flex flex-col space-y-3 text-sm">
+              <div className="flex flex-col space-y-3 text-sm">                
                 <div>
                   <span className="text-[gray]">Genres: </span>
                   {genres.map((genre) => genre.name).join(", ")}

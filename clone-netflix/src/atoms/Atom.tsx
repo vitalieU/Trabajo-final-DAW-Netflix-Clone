@@ -11,6 +11,16 @@ export const movieState = atom<Movie  | null>({
   key: 'movieState',
   default: null,
 })
+export const searchState = atom({
+  key: 'searchState',
+  default: false,
+
+})
+export const searchResult = atom<Movie[]|null>({
+  key: 'searchResult',
+  default: null,
+
+})
 
 export const userState = atom<User|null>({
   key: 'userState',

@@ -1,5 +1,6 @@
 import "../styles/Dashboard.css";
 import { useState } from "react";
+import {Link} from 'react-router-dom';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -10,9 +11,9 @@ import {
     Tooltip,
     Legend,
   } from 'chart.js';
-  import { Line } from 'react-chartjs-2';
-
-const socket = new WebSocket("ws://172.26.7.149:8080");
+import { Line } from 'react-chartjs-2';
+const url = '/ws';
+const socket = new WebSocket(url!);
 
 ChartJS.register(
   CategoryScale,
@@ -137,37 +138,12 @@ export default function Dashboard() {
                 className="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100 sidebar-dropdown-toggle"
               >
                 <i className="bx bx-user mr-3 text-lg"></i>
-                <span className="text-sm">Users</span>
+                <span className="text-sm">Usuarios</span>
                 <i className="ri-arrow-right-s-line ml-auto group-[.selected]:rotate-90"></i>
               </a>
-              <ul className="pl-7 mt-2 hidden group-[.selected]:block">
-                <li className="mb-4">
-                  <a
-                    href=""
-                    className="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3"
-                  >
-                    All
-                  </a>
-                </li>
-                <li className="mb-4">
-                  <a
-                    href=""
-                    className="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3"
-                  >
-                    Roles
-                  </a>
-                </li>
-              </ul>
+
             </li>
-            <li className="mb-1 group">
-              <a
-                href=""
-                className="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100"
-              >
-                <i className="bx bx-list-ul mr-3 text-lg"></i>
-                <span className="text-sm">Activities</span>
-              </a>
-            </li>
+
             <span className="text-gray-400 font-bold">BLOG</span>
             <li className="mb-1 group">
               <a
@@ -175,7 +151,7 @@ export default function Dashboard() {
                 className="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100 sidebar-dropdown-toggle"
               >
                 <i className="bx bxl-blogger mr-3 text-lg"></i>
-                <span className="text-sm">Post</span>
+                <span className="text-sm">Posts</span>
                 <i className="ri-arrow-right-s-line ml-auto group-[.selected]:rotate-90"></i>
               </a>
               <ul className="pl-7 mt-2 hidden group-[.selected]:block">
@@ -203,7 +179,7 @@ export default function Dashboard() {
                 className="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100"
               >
                 <i className="bx bx-archive mr-3 text-lg"></i>
-                <span className="text-sm">Archive</span>
+                <span className="text-sm">Archivo</span>
               </a>
             </li>
             <span className="text-gray-400 font-bold">PERSONAL</span>
@@ -213,10 +189,8 @@ export default function Dashboard() {
                 className="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100"
               >
                 <i className="bx bx-bell mr-3 text-lg"></i>
-                <span className="text-sm">Notifications</span>
-                <span className=" md:block px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-red-600 bg-red-200 rounded-full">
-                  5
-                </span>
+                <span className="text-sm">Notificaciones</span>
+
               </a>
             </li>
             <li className="mb-1 group">
@@ -225,10 +199,8 @@ export default function Dashboard() {
                 className="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100"
               >
                 <i className="bx bx-envelope mr-3 text-lg"></i>
-                <span className="text-sm">Messages</span>
-                <span className=" md:block px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-green-600 bg-green-200 rounded-full">
-                  2 New
-                </span>
+                <span className="text-sm">Mensajes</span>
+
               </a>
             </li>
           </ul>
@@ -261,12 +233,12 @@ export default function Dashboard() {
  
                 </div>
 
-                <a
-                  href="/gebruikers"
+                <Link
+                  to="/admin/users?type=tv"
                   className="text-[#f84525] font-medium text-sm hover:text-red-800"
                 >
                   View
-                </a>
+                </Link>
               </div>
               <div className="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
                 <div className="flex justify-between mb-4">
@@ -281,12 +253,12 @@ export default function Dashboard() {
                   </div>
                   
                 </div>
-                <a
-                  href="/dierenartsen"
+                <Link
+                  to="/admin/movies?type=movie"
                   className="text-[#f84525] font-medium text-sm hover:text-red-800"
                 >
                   View
-                </a>
+                </Link>
               </div>
               <div className="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
                 <div className="flex justify-between mb-6">
@@ -296,47 +268,14 @@ export default function Dashboard() {
                       Series
                     </div>
                   </div>
-                  <div className="dropdown">
-                    <button
-                      type="button"
-                      className="dropdown-toggle text-gray-400 hover:text-gray-600"
-                    >
-                      <i className="ri-more-fill"></i>
-                    </button>
-                    <ul className="dropdown-menu shadow-md shadow-black/5 z-30 hidden py-1.5 rounded-md bg-white border border-gray-100 w-full max-w-[140px]">
-                      <li>
-                        <a
-                          href="#"
-                          className="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50"
-                        >
-                          Profile
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="#"
-                          className="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50"
-                        >
-                          Settings
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="#"
-                          className="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50"
-                        >
-                          Logout
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
+
                 </div>
-                <a
-                  href=""
+                <Link
+                  to="/admin/movies"
                   className="text-[#f84525] font-medium text-sm hover:text-red-800"
                 >
                   View
-                </a>
+                </Link>
               </div>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
@@ -347,40 +286,7 @@ export default function Dashboard() {
               <div className="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md lg:col-span-2">
                 <div className="flex justify-between mb-4 items-start">
                   <div className="font-medium">Estadisticas de suscripciones</div>
-                  <div className="dropdown">
-                    <button
-                      type="button"
-                      className="dropdown-toggle text-gray-400 hover:text-gray-600"
-                    >
-                      <i className="ri-more-fill"></i>
-                    </button>
-                    <ul className="dropdown-menu shadow-md shadow-black/5 z-30 hidden py-1.5 rounded-md bg-white border border-gray-100 w-full max-w-[140px]">
-                      <li>
-                        <a
-                          href="#"
-                          className="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50"
-                        >
-                          Profile
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="#"
-                          className="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50"
-                        >
-                          Settings
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="#"
-                          className="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50"
-                        >
-                          Logout
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
+
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
                   

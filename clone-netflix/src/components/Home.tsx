@@ -1,7 +1,8 @@
-import { useRecoilValue } from 'recoil'
-import { modalState } from '../atoms/Atom'
+import {  useRecoilState, useRecoilValue } from 'recoil'
+import { modalState, searchResult, searchState, userState } from '../atoms/Atom'
 import Banner from './Banner'
 import Header from './Header'
+import SearchResults from './SearchResults'
 import Modal from './Modal'
 import Row from './Row'
 import { Movie } from '../../typing'
@@ -13,10 +14,12 @@ import { useEffect, useState } from 'react'
 
 function Home() {
   const showModal = useRecoilValue(modalState);
+  const search = useRecoilValue(searchState);
+  const [,setUser] =useRecoilState(userState);
+  const showsearchResult = useRecoilValue(searchResult)
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const type = searchParams.get('type') || 'all';
-
   const [netflixOriginals, setNetflixOriginals] = useState<Movie[]>([]);
   const [trendingNow, setTrendingNow] = useState<Movie[]>([]);
   const [topRated, setTopRated] = useState<Movie[]>([]);
@@ -30,13 +33,19 @@ function Home() {
     async function checkIfSuscribed(){
 
       const resp = await restService.checkUser();
-      console.log(resp);
-      if(resp!.suscribed===false){
-        navigate('/payment');
+      if(resp.code===0){
+        setUser({email:resp.user!.email,suscribed:resp.user!.suscribed})
+        return;
       }
-      else if(resp===null){
+      else
+      if(resp.code===1){
+        setUser({email:resp.user!.email,suscribed:resp.user!.suscribed})
+        navigate('/pricing');
+      }
+      else {
         navigate('/');
       }
+
     }
     async function fetchMovies() {
       setNetflixOriginals(await restService.getMovies(type!));
@@ -51,9 +60,10 @@ function Home() {
 
 
 
+
     fetchMovies().catch((error) => console.error(error));
     checkIfSuscribed().catch((error) => console.error(error));
-  }, [type]);
+  }, [type,]);
 
 
   return (
@@ -61,27 +71,35 @@ function Home() {
       className={`relative h-screen bg-gradient-to-b lg:h-[140vh] ${
         showModal && '!h-screen overflow-hidden'
       }`}
+      style={{ maxWidth: '99%' }}
     >
 
       <Header />
       <main className="relative pl-4 pb-24 lg:space-y-24 lg:pl-16">
-        <Banner netflixOriginals={netflixOriginals} />
-        <section className="md:space-y-24">
-          <Row title="Populares" movies={trendingNow} />
-          <Row title="Más valorados" movies={topRated} />
-          {/*don'have tv shows for this genres so I remove this rows*/
-          type !== 'tv' && (
+
+         {!search ? (
           <>
-            <Row title="Acción" movies={actionMovies} />
-            <Row title="Terror " movies={horrorMovies} />
-            <Row title="Romance" movies={romanceMovies} />
+            <Banner netflixOriginals={netflixOriginals} />
+            <section className="md:space-y-24">
+              <Row title="Populares" movies={trendingNow} />
+              <Row title="Más valorados" movies={topRated} />
+              {/*don'have tv shows for this genres so I remove this rows*/
+              type !== 'tv' && (
+                <>
+                  <Row title="Acción" movies={actionMovies} />
+                  <Row title="Terror " movies={horrorMovies} />
+                  <Row title="Romance" movies={romanceMovies} />
+                </>
+              )}
+              <Row title="Comedias" movies={comedyMovies} />
+              <Row title="Documentales" movies={documentaries} />
+            </section>
           </>
-          )}
-          <Row title="Comedias" movies={comedyMovies} />
-          <Row title="Documentales" movies={documentaries} />
-        </section>
+        ) : (
+          <SearchResults movie={showsearchResult!} />
+        )}
       </main>
-      {showModal && <Modal />}
+      {showModal && <Modal /> }
     </div>
   )
 }

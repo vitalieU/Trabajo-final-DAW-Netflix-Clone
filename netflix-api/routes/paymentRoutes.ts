@@ -7,6 +7,6 @@ const routes = express.Router();
 routes.post('/create-subscription', paymentController.createSubscription);
 routes.get('/success', paymentController.successTtransaction);
 routes.get('/cancel', paymentController.canceledTRansaction);
-routes.get('/check-suscription', paymentController.checkIfSuscribtionIsCompleted);
+routes.get('/check-subscription', paymentController.checkIfSuscribtionIsCompleted);
 
 export default routes;
